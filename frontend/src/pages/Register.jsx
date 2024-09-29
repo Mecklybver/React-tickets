@@ -1,16 +1,37 @@
-import { useState } from "react";
-import {toast} from 'react-toastify';
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import { FaUser } from "react-icons/fa";
+import { useSelector, useDispatch } from "react-redux";
+import { register, reset } from "../features/auth/authSlice";
+import Spinner from "../components/Spinner";
 
 function Register() {
   const [formData, setFormData] = useState({
-    username: "",
+    name: "",
     email: "",
     password: "",
-    password2: ""
+    password2: "",
   });
 
-  const { username, email, password, password2 } = formData;
+  const { name, email, password, password2 } = formData;
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const { user, isLoading, isSuccess, message, isError } = useSelector(
+    (state) => state.auth
+  );
+
+  useEffect(() => {
+    if (isError) {
+      toast.error(message);
+    }
+    if (isSuccess || user) {
+      navigate("/");
+    }
+    dispatch(reset());
+  }, [user, isError, isSuccess, message, dispatch, navigate]);
 
   const onChange = (e) => {
     setFormData((prevState) => ({
@@ -24,8 +45,19 @@ function Register() {
 
     if (password !== password2) {
       toast.error("Passwords do not match");
+    } else {
+      const userData = {
+        name,
+        email,
+        password,
+      };
+      dispatch(register(userData));
     }
   };
+
+  if (isLoading) {
+    return <Spinner />;
+  }
 
   return (
     <>
@@ -41,11 +73,11 @@ function Register() {
             <input
               type="text"
               className="form-control"
-              id="username"
-              name="username"
-              value={username}
+              id="name"
+              name="name"
+              value={name}
               onChange={onChange}
-              placeholder="Enter your username"
+              placeholder="Enter your name"
               required
             />
           </div>
