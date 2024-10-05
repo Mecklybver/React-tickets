@@ -11,22 +11,15 @@ connectDB();
 
 const app = express();
 
-//Middleware
+// Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(errorHandler);
 
-app.get("/", (req, res) => {
-  res.status(200).json({
-    message: "Welcome to the support desk API",
-  });
-});
-
-//Routes
+// Routes
 app.use("/api/users", require("./routes/userRoutes"));
 app.use("/api/tickets", require("./routes/ticketRoutes"));
 
-//Serve frontent
+// Serve frontend
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "../frontend/build")));
 
@@ -43,7 +36,7 @@ if (process.env.NODE_ENV === "production") {
   });
 }
 
-//Error
+// Error handling middleware
 app.use(errorHandler);
 
 app.listen(PORT, () =>
