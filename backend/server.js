@@ -36,12 +36,13 @@ if (process.env.NODE_ENV === "production") {
             path.resolve(__dirname, "../", "frontend", "build", "index.html")
         )
     })
-} else {
-    app.get("/", (req, res) => {
-        res.status(200).json({
-            message: "Welcome to the support desk API"
-        })
-    })
+}
+// else {
+//     app.get("/", (req, res) => {
+//         res.status(200).json({
+//             message: "Welcome to the support desk API"
+//         })
+//     })
 }
 
 //Error
