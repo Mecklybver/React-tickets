@@ -43,7 +43,7 @@ if (process.env.NODE_ENV === "production") {
 //             message: "Welcome to the support desk API"
 //         })
 //     })
-}
+// }
 
 //Error
 app.use(errorHandler)
